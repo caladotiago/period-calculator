@@ -1,7 +1,8 @@
 import axios from 'axios';
+import isDev from '../utilities/envChecker';
 
 const network = axios.create({
-    baseURL: 'http://localhost:3333',
+    baseURL: isDev ? 'http://localhost:3333' : '/',
 });
 
 export default network;
