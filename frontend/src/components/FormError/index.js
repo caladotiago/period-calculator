@@ -9,3 +9,10 @@ export default props => {
         </div>
     );
 };
+
+const FormErrorProps = {
+    display: 'hide',
+    message: '',
+};
+
+export { FormErrorProps };

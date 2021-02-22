@@ -13,8 +13,8 @@ function App() {
             <div className="container calculator-wrapper">
                 <div className="card">
                     <div className="card-title blue lighten-1">
-                        Informe a data de entrada e saída e veja quanto tempo
-                        trabalhou no período noturno e diurno.
+                        Informe as horas de entrada e saída e veja seu tempo de
+                        trabalho no período diurno e noturno.
                     </div>
                     <div className="card-content">
                         <Calculator />

@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
 import { Preloader } from 'react-materialize';
+
 import network from '../../services/network';
+
 import TimePicker from '../TimePicker';
+import FormError, { FormErrorProps } from '../FormError';
+
 import { validateFields } from './validator';
-import FormError from '../FormError';
 import Result, { ResultProps } from './Result';
 
 import './index.css';
@@ -16,10 +19,7 @@ export default function Calculator() {
     const showLoading = () => setLoadingDisplay('');
     const hideLoading = () => setLoadingDisplay('hide');
 
-    const [errorProps, setErrorProps] = useState({
-        message: '',
-        display: 'hide',
-    });
+    const [errorProps, setErrorProps] = useState(FormErrorProps);
 
     const showError = message => setErrorProps({ message, display: '' });
     const hideError = () => setErrorProps({ message: '', display: 'hide' });
@@ -49,13 +49,7 @@ export default function Calculator() {
                 .get(
                     `/periods?initialTime=${initialTime}&finalTime=${finalTime}`
                 )
-                .then(response => {
-                    const { data } = response;
-
-                    setResultProps({
-                        ...data,
-                    });
-                })
+                .then(({ data }) => setResultProps({ ...data }))
                 .catch(error => {
                     let message = 'error.unknow';
                     if (error.response && error.response.data) {
@@ -78,13 +72,13 @@ export default function Calculator() {
                 <div className="row">
                     {createTimePicker({
                         id: 'initial-time',
-                        label: 'Hora de Entrada',
+                        label: 'Entrada',
                         onChange: setInitialTime,
                         time: initialTime,
                     })}
                     {createTimePicker({
                         id: 'final-time',
-                        label: 'Hora de Saída',
+                        label: 'Saída',
                         onChange: setFinalTime,
                         time: finalTime,
                     })}

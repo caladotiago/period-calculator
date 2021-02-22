@@ -1,7 +1,7 @@
 const macros = {
-    'finalTime.invalid': 'Data final inválida',
-    'initialTime.invalid': 'Data inicial inválida',
-    'time.interval': 'As duas datas devem ser diferentes',
+    'finalTime.invalid': 'Hora final inválida',
+    'initialTime.invalid': 'Hora inicial inválida',
+    'time.interval': 'As duas horas devem ser diferentes',
     unknow:
         'Erro desconhecio. Recarregue a página ou tente novamente mais tarde',
 };
