@@ -3,7 +3,7 @@ const macros = {
     'initialTime.invalid': 'Hora inicial inválida',
     'time.interval': 'As duas horas devem ser diferentes',
     unknow:
-        'Erro desconhecio. Recarregue a página ou tente novamente mais tarde',
+        'Erro desconhecio. Recarregue a página ou tente novamente mais tarde.',
 };
 
 export default macros;

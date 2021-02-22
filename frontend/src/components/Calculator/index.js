@@ -51,7 +51,7 @@ export default function Calculator() {
                 )
                 .then(({ data }) => setResultProps({ ...data }))
                 .catch(error => {
-                    let message = 'error.unknow';
+                    let message = 'unknow';
                     if (error.response && error.response.data) {
                         message = error.response.data;
                     }
