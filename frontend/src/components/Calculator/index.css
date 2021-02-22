@@ -2,3 +2,7 @@
     justify-content: flex-end;
     height: 54px;
 }
+
+.result > p {
+    font-size: 1.2em;
+}

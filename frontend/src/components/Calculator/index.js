@@ -4,6 +4,7 @@ import network from '../../services/network';
 import TimePicker from '../TimePicker';
 import { validateFields } from './validator';
 import FormError from '../FormError';
+import Result, { ResultProps } from './Result';
 
 import './index.css';
 
@@ -22,6 +23,8 @@ export default function Calculator() {
 
     const showError = message => setErrorProps({ message, display: '' });
     const hideError = () => setErrorProps({ message: '', display: 'hide' });
+
+    const [resultProps, setResultProps] = useState(ResultProps);
 
     let canSubmit = true;
 
@@ -46,7 +49,13 @@ export default function Calculator() {
                 .get(
                     `/periods?initialTime=${initialTime}&finalTime=${finalTime}`
                 )
-                .then(({ data }) => console.log(data))
+                .then(response => {
+                    const { data } = response;
+
+                    setResultProps({
+                        ...data,
+                    });
+                })
                 .catch(error => {
                     let message = 'error.unknow';
                     if (error.response && error.response.data) {
@@ -62,40 +71,43 @@ export default function Calculator() {
     };
 
     return (
-        <form onSubmit={submitListener}>
-            <FormError {...errorProps} />
+        <>
+            <form onSubmit={submitListener}>
+                <FormError {...errorProps} />
 
-            <div className="row">
-                {createTimePicker({
-                    id: 'initial-time',
-                    label: 'Hora de Entrada',
-                    onChange: setInitialTime,
-                    time: initialTime,
-                })}
-                {createTimePicker({
-                    id: 'final-time',
-                    label: 'Hora de Saída',
-                    onChange: setFinalTime,
-                    time: finalTime,
-                })}
-            </div>
+                <div className="row">
+                    {createTimePicker({
+                        id: 'initial-time',
+                        label: 'Hora de Entrada',
+                        onChange: setInitialTime,
+                        time: initialTime,
+                    })}
+                    {createTimePicker({
+                        id: 'final-time',
+                        label: 'Hora de Saída',
+                        onChange: setFinalTime,
+                        time: finalTime,
+                    })}
+                </div>
 
-            <div className="row">
-                <div className="col s8">
-                    <button
-                        className="btn waves-effect blue lighten-1 black-text btn-large"
-                        type="submit"
+                <div className="row">
+                    <div className="col s8">
+                        <button
+                            className="btn waves-effect blue lighten-1 black-text btn-large"
+                            type="submit"
+                        >
+                            Calcular
+                        </button>
+                    </div>
+                    <div
+                        className={`col s4 valign-wrapper calculator-loading ${loadingDisplay}`}
                     >
-                        Calcular
-                    </button>
+                        <Preloader size="small" />
+                    </div>
                 </div>
-                <div
-                    className={`col s4 valign-wrapper calculator-loading ${loadingDisplay}`}
-                >
-                    <Preloader size="small" />
-                </div>
-            </div>
-        </form>
+            </form>
+            <Result {...resultProps} />
+        </>
     );
 }
 

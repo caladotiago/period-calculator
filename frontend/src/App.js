@@ -3,7 +3,7 @@ import './App.css';
 
 function App() {
     return (
-        <div className="grey lighten-4 page-wrapper">
+        <div className="grey lighten-3 page-wrapper">
             <header className="center-align blue lighten-1">
                 <h3>
                     Calculadora de horas
