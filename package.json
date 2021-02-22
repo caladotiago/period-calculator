@@ -1,0 +1,21 @@
+{
+    "name": "period-calculator",
+    "version": "1.0.0",
+    "description": "",
+    "main": "backend/src/index.js",
+    "scripts": {
+        "postinstall": "cd client && npm install",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/tsouza21/period-calculator.git"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/tsouza21/period-calculator/issues"
+    },
+    "homepage": "https://github.com/tsouza21/period-calculator#readme"
+}
