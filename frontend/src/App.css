@@ -1,0 +1,26 @@
+.page-wrapper {
+    min-height: 100vh;
+}
+
+header {
+    padding: 30px 0px;
+}
+header > h3 {
+    margin: 0;
+    font-size: 2em;
+}
+
+.calculator-wrapper {
+    margin-top: 15px;
+}
+
+.calculator-wrapper .card-title {
+    padding: 24px;
+    border-bottom: 1px solid rgba(160, 160, 160, 0.2);
+    font-size: 18px;
+}
+
+.calculator-icon {
+    vertical-align: middle;
+    margin-left: 5px;
+}

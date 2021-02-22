@@ -12,35 +12,30 @@ PeriodControler.prototype.view = function (req, res) {
     let message;
 
     if (verifyTimePattern(initialTime)) {
-
         if (verifyTimePattern(finalTime)) {
-
             if (initialTime !== finalTime) {
+                const initialTimeNumber = convertTimeStringToNumber(
+                    initialTime
+                );
+                const finalTimeTimeNumber = convertTimeStringToNumber(
+                    finalTime
+                );
 
-                const initialTimeNumber = convertTimeStringToNumber(initialTime);
-                const finalTimeTimeNumber = convertTimeStringToNumber(finalTime);
-                
                 if (initialTimeNumber >= 0 && initialTimeNumber < 24) {
-
                     if (finalTimeTimeNumber >= 0 && finalTimeTimeNumber < 24) {
                         const { dayHours, nightHours } = calculatePeriods(
                             initialTimeNumber,
                             finalTimeTimeNumber
                         );
-        
+
                         return res.status(200).json({
                             dayHours: convertTimeNumberToString(dayHours),
                             nightHours: convertTimeNumberToString(nightHours),
                         });
-
                     } else message = 'finalTime.invalid';
-
                 } else message = 'initialTime.invalid';
-
             } else message = 'time.interval';
-
         } else message = 'finalTime.invalid';
-
     } else message = 'initialTime.invalid';
 
     return res.status(400).json(message);
