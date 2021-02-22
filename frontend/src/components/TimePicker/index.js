@@ -6,7 +6,7 @@ export default props => {
     const timeChangeHandler = ev => onChange(ev.target.value);
 
     return (
-        <div>
+        <>
             <label htmlFor={id}>{label}</label>
             <input
                 id={id}
@@ -15,6 +15,6 @@ export default props => {
                 value={time}
                 required={true}
             />
-        </div>
+        </>
     );
 };

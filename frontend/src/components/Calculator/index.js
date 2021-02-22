@@ -1,23 +1,30 @@
 import React, { useState } from 'react';
+import { Preloader } from 'react-materialize';
 import network from '../../services/network';
 import TimePicker from '../TimePicker';
+import { validateFields } from './validator';
+import FormError from '../FormError';
+
+import './index.css';
 
 export default function Calculator() {
     const [initialTime, setInitialTime] = useState('');
     const [finalTime, setFinalTime] = useState('');
 
+    const [loadingDisplay, setLoadingDisplay] = useState('hide');
+    const showLoading = () => setLoadingDisplay('');
+    const hideLoading = () => setLoadingDisplay('hide');
+
+    const [errorProps, setErrorProps] = useState({
+        message: '',
+        display: 'hide',
+    });
+
+    const showError = message => setErrorProps({ message, display: '' });
+    const hideError = () => setErrorProps({ message: '', display: 'hide' });
+
     let canSubmit = true;
 
-    const initialTimeChangeListener = newInitialTime => {
-        console.log(newInitialTime);
-        setInitialTime(newInitialTime);
-    };
-
-    const finalTimeChangeListener = newFinalTime => {
-        setFinalTime(newFinalTime);
-    };
-
-    // network
     const submitListener = ev => {
         ev.preventDefault();
 
@@ -25,47 +32,77 @@ export default function Calculator() {
         if (canSubmit) {
             canSubmit = false;
 
+            let message;
+            if ((message = validateFields(initialTime, finalTime)) !== '') {
+                showError(message);
+                canSubmit = true;
+                return;
+            }
+
+            hideError();
+            showLoading();
+
             network
                 .get(
                     `/periods?initialTime=${initialTime}&finalTime=${finalTime}`
                 )
                 .then(({ data }) => console.log(data))
-                .catch(error => console.log(error))
-                .then(() => (canSubmit = true));
+                .catch(error => {
+                    let message = 'error.unknow';
+                    if (error.response && error.response.data) {
+                        message = error.response.data;
+                    }
+                    showError(message);
+                })
+                .then(() => {
+                    canSubmit = true;
+                    hideLoading();
+                });
         }
     };
 
     return (
         <form onSubmit={submitListener}>
+            <FormError {...errorProps} />
+
             <div className="row">
-                <div className="col s12 m6">
-                    <TimePicker
-                        id="initial-time"
-                        label="Hora de Entrada"
-                        onChange={initialTimeChangeListener}
-                        time={initialTime}
-                    />
-                </div>
-                <div className="col s12 m6">
-                    <TimePicker
-                        id="final-time"
-                        label="Hora de Saída"
-                        onChange={finalTimeChangeListener}
-                        time={finalTime}
-                    />
-                </div>
+                {createTimePicker({
+                    id: 'initial-time',
+                    label: 'Hora de Entrada',
+                    onChange: setInitialTime,
+                    time: initialTime,
+                })}
+                {createTimePicker({
+                    id: 'final-time',
+                    label: 'Hora de Saída',
+                    onChange: setFinalTime,
+                    time: finalTime,
+                })}
             </div>
 
             <div className="row">
-                <div className="col s12">
+                <div className="col s8">
                     <button
-                        className="btn waves-effect cyan accent-2 black-text btn-large"
+                        className="btn waves-effect blue lighten-1 black-text btn-large"
                         type="submit"
                     >
                         Calcular
                     </button>
                 </div>
+                <div
+                    className={`col s4 valign-wrapper calculator-loading ${loadingDisplay}`}
+                >
+                    <Preloader size="small" />
+                </div>
             </div>
         </form>
+    );
+}
+
+function createTimePicker(props) {
+    return (
+        <div className="col s12 m6">
+            <TimePicker {...props} />
+        </div>
     );
 }
